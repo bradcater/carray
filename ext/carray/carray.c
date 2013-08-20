@@ -49,8 +49,14 @@ static VALUE c_euclidean_distance(VALUE self, VALUE v2) {
 static VALUE c_int_include(VALUE self, VALUE v) {
   VALUE *x = RARRAY_PTR(self);
   long n = RARRAY_LEN(self);
-  long vv = NUM2LONG(v);
+  long vv;
   long i;
+
+  if (TYPE(v) != T_FIXNUM) {
+    rb_raise(rb_eTypeError, "argument must be integer");
+  }
+  vv = NUM2LONG(v);
+
   for (i=0; i<n; i++) {
     if (TYPE(x[i]) != T_FIXNUM) {
       rb_raise(rb_eTypeError, "input was not all integers");
