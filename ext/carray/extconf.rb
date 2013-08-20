@@ -1,14 +1,22 @@
 require 'mkmf'
 
+home_dir = `echo $HOME`.strip
+dirs = [
+  File.join(home_dir, 'include/glib-2.0'),
+  File.join(home_dir, 'lib/glib-2.0/include'),
+  File.join(home_dir, 'lib'),
+]
+
+dirs.each{|d| puts d}
+
 extension_name = 'carray'
 dir_config(extension_name)
 dir_config('glib-2.0',
   # Include paths.
-  %w{/usr/include/glib-2.0 /usr/lib/x86_64-linux-gnu/glib-2.0/include
-     /usr/lib64/glib-2.0/include},
+  dirs,
   # Library paths.
-  %w{/usr/lib/x86_64-linux-gnu/glib-2.0/include
-     /usr/lib64/glib-2.0/include})
+  dirs
+)
 if have_library("glib-2.0")
   create_makefile(extension_name)
 else
