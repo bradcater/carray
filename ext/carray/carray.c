@@ -196,7 +196,7 @@ static VALUE c_variance(VALUE self) {
 void Init_carray() {
   rb_define_method(rb_cArray, "c_dot_product", c_dot_product, 1);
   rb_define_method(rb_cArray, "c_euclidean_distance", c_euclidean_distance, 1);
-  rb_define_method(rb_cArray, "c_int_include", c_int_include, 1);
+  rb_define_method(rb_cArray, "c_int_include?", c_int_include, 1);
   rb_define_method(rb_cArray, "c_int_uniq", c_int_uniq, 0);
   rb_define_method(rb_cArray, "c_magnitude", c_magnitude, 0);
   rb_define_method(rb_cArray, "c_mean", c_mean, 0);

@@ -12,12 +12,12 @@ describe Carray do
     expect{[1, 2, 3].c_euclidean_distance([3, 'd'])}.to raise_error(TypeError)
   end
   it 'should do c_int_include' do
-    [1, 2, 3].c_int_include(1).should be true
-    [1, 2, 3].c_int_include(0).should be false
-    expect{[1, 'b', 3].c_int_include(1)}.to_not raise_error
-    expect{[0, 'b', 3].c_int_include(1)}.to raise_error(TypeError)
-    expect{[1, 2, 3].c_int_include('a')}.to raise_error(TypeError)
-    expect{[0, 'b', 3].c_int_include('a')}.to raise_error(TypeError)
+    [1, 2, 3].c_int_include?(1).should be true
+    [1, 2, 3].c_int_include?(0).should be false
+    expect{[1, 'b', 3].c_int_include?(1)}.to_not raise_error
+    expect{[0, 'b', 3].c_int_include?(1)}.to raise_error(TypeError)
+    expect{[1, 2, 3].c_int_include?('a')}.to raise_error(TypeError)
+    expect{[0, 'b', 3].c_int_include?('a')}.to raise_error(TypeError)
   end
   it 'should do c_int_uniq' do
     [].c_int_uniq.should eq([])
