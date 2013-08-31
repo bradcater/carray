@@ -1,7 +1,14 @@
+/* Array Includes */
 #include <glib.h>
 #include <math.h>
 #include <ruby.h>
 
+/* Integer Includes */
+#include <limits.h>
+#include <stdio.h>
+#include <errno.h>
+
+/* Array Methods */
 void iterator(gpointer key, gpointer value, gpointer user_data) {
   rb_ary_push((VALUE)user_data, (VALUE)value);
 }
@@ -193,7 +200,31 @@ static VALUE c_variance(VALUE self) {
   return DBL2NUM(accum_sum / n);
 }
 
+/* Integer methods */
+static VALUE c_to_pos_i(VALUE self) {
+  char *endptr;
+  long val;
+  if (RSTRING_LEN(self) == 0) {
+    rb_raise(rb_eRangeError, "input was blank");
+  }
+  if (RSTRING_PTR(self)[0] == '-') {
+    rb_raise(rb_eRangeError, "input was negative");
+  }
+  val = strtol(RSTRING_PTR(self), &endptr, 10);
+  /* Adapted from
+   * http://linux.die.net/man/3/strtol */
+  if (endptr == RSTRING_PTR(self)) {
+    rb_raise(rb_eArgError, "no digits were found");
+  }
+  if ((errno == ERANGE && (val == LONG_MAX || val == LONG_MIN))
+       || (errno != 0 && val == 0)) {
+    rb_raise(rb_eRangeError, "input was out of range");
+  }
+  return INT2NUM(val);
+}
+
 void Init_carray() {
+  /* Array Methods */
   rb_define_method(rb_cArray, "c_dot_product", c_dot_product, 1);
   rb_define_method(rb_cArray, "c_euclidean_distance", c_euclidean_distance, 1);
   rb_define_method(rb_cArray, "c_int_include?", c_int_include, 1);
@@ -202,5 +233,8 @@ void Init_carray() {
   rb_define_method(rb_cArray, "c_mean", c_mean, 0);
   rb_define_method(rb_cArray, "c_pearson_correlation", c_pearson_correlation, 1);
   rb_define_method(rb_cArray, "c_variance", c_variance, 0);
+  /* Integer Methods */
+  rb_define_method(rb_cString, "c_to_pos_i", c_to_pos_i, 0);
+  /* Welcome! */
   printf("Welcome to carray!\n");
 }
