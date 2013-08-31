@@ -201,14 +201,11 @@ static VALUE c_variance(VALUE self) {
 }
 
 /* Integer methods */
-static VALUE c_to_pos_i(VALUE self) {
+static VALUE c_to_i(VALUE self) {
   char *endptr;
   long val;
   if (RSTRING_LEN(self) == 0) {
     rb_raise(rb_eRangeError, "input was blank");
-  }
-  if (RSTRING_PTR(self)[0] == '-') {
-    rb_raise(rb_eRangeError, "input was negative");
   }
   val = strtol(RSTRING_PTR(self), &endptr, 10);
   /* Adapted from
@@ -234,7 +231,7 @@ void Init_carray() {
   rb_define_method(rb_cArray, "c_pearson_correlation", c_pearson_correlation, 1);
   rb_define_method(rb_cArray, "c_variance", c_variance, 0);
   /* Integer Methods */
-  rb_define_method(rb_cString, "c_to_pos_i", c_to_pos_i, 0);
+  rb_define_method(rb_cString, "c_to_i", c_to_i, 0);
   /* Welcome! */
   printf("Welcome to carray!\n");
 }
