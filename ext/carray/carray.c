@@ -204,6 +204,7 @@ static VALUE c_variance(VALUE self) {
 static VALUE c_to_i(VALUE self) {
   char *endptr;
   long val;
+  errno = 0; /* To distinguish success/failure after call */
   if (RSTRING_LEN(self) == 0) {
     rb_raise(rb_eRangeError, "input was blank");
   }
